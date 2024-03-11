@@ -18,20 +18,22 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST API controller for author collection.
+ * REST API controller for user collection.
  */
 @RestController
 @RequestMapping("users")
 public class UserController {
     private Map<Integer, User> users;
     private int latestId;
-
+    /**
+     * Constructor for UserController, initializes the user collection with dummy data.
+     */
     public UserController() {
         initializeData();
     }
 
     /**
-     * Initialize dummy author data for the collection.
+     * Initialize dummy user data for the collection.
      */
     private void initializeData() {
         latestId = 1;
@@ -40,16 +42,20 @@ public class UserController {
         addUserToCollection(new User(-1, "Keith", "Ross", "keith@email.com", "password"));
         addUserToCollection(new User(-1, "Jordan", "Peterson", "jordan@email.com","password" ));
     }
-
+    /**
+     * Generate a new unique ID for a user.
+     *
+     * @return The newly generated ID
+     */
     private int createNewId() {
         return latestId++;
     }
 
     /**
-     * Get All authors.
-     * HTTP GET to /authors
+     * Get All users.
+     * HTTP GET to /users
      *
-     * @return List of all authors currently stored in the collection
+     * @return List of all users currently stored in the collection
      */
     @GetMapping
     public Collection<User> getAll() {
@@ -57,10 +63,10 @@ public class UserController {
     }
 
     /**
-     * Get a specific author.
+     * Get a specific user.
      *
-     * @param id ID of the author to be returned
-     * @return Author with the given ID or status 404
+     * @param id ID of the user to be returned
+     * @return User with the given ID or status 404 if not found
      */
     @GetMapping("/{id}")
     public ResponseEntity<User> getOne(@PathVariable Integer id) {
@@ -74,7 +80,12 @@ public class UserController {
         return response;
     }
 
-
+    /**
+     * Add a new user to the collection.
+     *
+     * @param user The user object to add
+     * @return Status 201 CREATED on success, or 400 BAD_REQUEST if the user is invalid
+     */
     @PostMapping
     public ResponseEntity<String> add(@RequestBody User user) {
         ResponseEntity<String> response;
@@ -88,7 +99,12 @@ public class UserController {
 
         return response;
     }
-
+    /**
+     * Add a user to the collection.
+     *
+     * @param user The user object to add
+     * @throws IllegalArgumentException If the user is invalid
+     */
     private void addUserToCollection(User user) throws IllegalArgumentException {
         if (!user.isValid()) {
             throw new IllegalArgumentException("Invalid user");
@@ -100,10 +116,10 @@ public class UserController {
     }
 
     /**
-     * Delete an author from the collection.
+     * Delete a user from the collection.
      *
-     * @param id ID of the author to delete
-     * @return 200 OK on success, 404 Not found on error
+     * @param id ID of the user to delete
+     * @return Status 200 OK on success, or 404 NOT_FOUND if the user was not found
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
@@ -117,17 +133,23 @@ public class UserController {
     }
 
     /**
-     * Try to remove an author from the collection.
+     * Remove a user from the collection.
      *
-     * @param id ID of the author to remove
-     * @return True when author with given ID was found and removed, false otherwise
+     * @param id ID of the user to remove
+     * @return True if the user was found and removed, false otherwise
      */
     private boolean removeUserFromCollection(int id) {
         User removedUser = users.remove(id);
         return removedUser != null;
     }
 
-
+    /**
+     * Update a user in the collection.
+     *
+     * @param id   ID of the user to update
+     * @param user The updated user object
+     * @return Status 200 OK on success, or 400 BAD_REQUEST if the update failed
+     */
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody User user) {
         ResponseEntity<String> response;
@@ -140,7 +162,13 @@ public class UserController {
 
         return response;
     }
-
+    /**
+     * Update a user in the collection.
+     *
+     * @param id   ID of the user to update
+     * @param user The updated user object
+     * @throws IllegalArgumentException If the user is not found or the update is invalid
+     */
     private void updateUser(int id, User user) throws IllegalArgumentException {
         User existingUser = findUserById(id);
         if (existingUser == null) {
@@ -158,10 +186,10 @@ public class UserController {
     }
 
     /**
-     * Search through the author collection, find the author by given ID.
+     * Search for a user in the collection by ID.
      *
-     * @param id Author ID
-     * @return Author or null if not found
+     * @param id The ID of the user to search for
+     * @return The user object if found, otherwise null
      */
     private User findUserById(Integer id) {
         return users.get(id);
