@@ -1,0 +1,5 @@
+ntnu\no\courses\model\Course.class
+ntnu\no\courses\repository\CourseRepository.class
+ntnu\no\courses\model\User.class
+ntnu\no\courses\service\CourseService.class
+ntnu\no\courses\CoursesApplication.class
