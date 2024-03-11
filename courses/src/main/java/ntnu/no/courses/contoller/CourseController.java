@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * REST API controller for book collection.
+ * REST API controller for managing courses.
  */
 @RestController
 @RequestMapping("/courses")
@@ -32,10 +32,9 @@ public class CourseController {
 
 
     /**
-     * Get All books.
-     * HTTP GET to /books
+     * Retrieve all courses.
      *
-     * @return List of all books currently stored in the collection
+     * @return List of all courses in the collection
      */
     @GetMapping
     public Iterable<Course> getAll() {
@@ -44,10 +43,10 @@ public class CourseController {
     }
 
     /**
-     * Get a specific book.
+     * Retrieve a specific course by ID.
      *
-     * @param id ID` of the book to be returned
-     * @return Book with the given ID or status 404
+     * @param id ID of the course to retrieve
+     * @return ResponseEntity containing the requested course, or 404 if not found
      */
     @GetMapping("/{id}")
     public ResponseEntity<Course> getOne(@PathVariable Integer id) {
@@ -61,7 +60,12 @@ public class CourseController {
         return response;
     }
 
-
+    /**
+     * Add a new course.
+     *
+     * @param course The course object to add
+     * @return ResponseEntity with the ID of the newly added course, or error status
+     */
     @PostMapping()
     ResponseEntity<String> add(@RequestBody Course course) {
         ResponseEntity<String> response;
@@ -76,10 +80,10 @@ public class CourseController {
     }
 
     /**
-     * Delete a book from the collection.
+     * Delete a course by ID.
      *
-     * @param id ID of the book to delete
-     * @return 200 OK on success, 404 Not found on error
+     * @param id ID of the course to delete
+     * @return ResponseEntity with success status, or 404 if course not found
      */
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable int id) {
@@ -92,7 +96,13 @@ public class CourseController {
         return response;
     }
 
-
+    /**
+     * Update an existing course.
+     *
+     * @param id     ID of the course to update
+     * @param course Updated course object
+     * @return ResponseEntity with success status, or error status
+     */
     @PutMapping("/{id}")
     public ResponseEntity<String> update(@PathVariable int id, @RequestBody Course course) {
         ResponseEntity<String> response;
