@@ -1,6 +1,7 @@
 package ntnu.no.courses.contoller;
 
 
+import java.sql.*;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -21,7 +22,7 @@ import org.springframework.web.bind.annotation.RestController;
  * REST API controller for user collection.
  */
 @RestController
-@RequestMapping("users")
+@RequestMapping("/users")
 public class UserController {
     private Map<Integer, User> users;
     private int latestId;
@@ -29,7 +30,31 @@ public class UserController {
      * Constructor for UserController, initializes the user collection with dummy data.
      */
     public UserController() {
-        initializeData();
+        users = new HashMap<>();
+        String jdbcUrl = "jdbc:mysql://localhost:3306/courses";
+        String databaseUsername = "root";
+        String databasePassword = "7V9eR3123!";
+
+        try (Connection connection = DriverManager.getConnection(jdbcUrl, databaseUsername, databasePassword)) {
+            // Create SQL query
+            String query = "SELECT * FROM user";
+            try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+                 ResultSet resultSet = preparedStatement.executeQuery()) {
+                // Iterate over the result set and create Book objects
+                while (resultSet.next()) {
+                    int id = resultSet.getInt("Id");
+                    String firstName = resultSet.getString("firstName");
+                    String lastName = resultSet.getString("lastName");
+                    String email = resultSet.getString("Email");
+                    String password = resultSet.getString("Password");
+                    User user = new User(id, firstName, lastName, email, password);
+                    users.put(id,user);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace(); // Handle exceptions appropriately in a real-world scenario
+        }
+        //initializeData();
     }
 
     /**
