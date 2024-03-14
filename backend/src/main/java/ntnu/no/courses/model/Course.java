@@ -10,7 +10,6 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
 
 /**
  * Represents a resource: a course. Course objects are stored in the application state.
@@ -24,15 +23,16 @@ public final class Course {
     private String description;
     private int duration;
 
-    @ManyToMany(mappedBy = "courses")
-    private Set<User> users = new HashSet<>();
+    /*
+        @ManyToMany(mappedBy = "courses")
+    private Set<Course> courses = new HashSet<>();
+     */
+
     /**
      * Default constructor for Course.
      */
     public Course() {
     }
-
-
 
     /**
      * Check if this object is a valid course.
@@ -108,22 +108,26 @@ public final class Course {
     public void setDuration(int duration) {
         this.duration = duration;
     }
+
+    /*
     /**
      * Getter for the set of users enrolled in the course.
      *
      * @return The set of users enrolled in the course
-     */
-    public Set<User> getUsers() {
-        return users;
+
+    public Set<Course> getCourses() {
+        return courses;
     }
     /**
-     * Setter for the set of users enrolled in the course.
+     * Setter for the set of courses enrolled in the course.
      *
-     * @param users The set of users to set
-     */
-    public void setUsers(Set<User> users) {
-        this.users = users;
+     * @param courses The set of users to set
+
+    public void setCourses(Set<Course> courses) {
+        this.courses = courses;
     }
+     */
+
     /**
      * Checks if two course objects are equal.
      *

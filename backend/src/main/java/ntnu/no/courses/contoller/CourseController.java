@@ -1,118 +1,64 @@
 package ntnu.no.courses.contoller;
 
 
+import java.util.List;
 import java.util.Optional;
 
+import ntnu.no.courses.exception.CourseNotFoundException;
 import ntnu.no.courses.model.Course;
-import ntnu.no.courses.service.CourseService;
+import ntnu.no.courses.repository.CourseRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 /**
  * REST API controller for managing courses.
  */
 @RestController
-@RequestMapping("/courses")
+@CrossOrigin("http://localhost:5173")
 public class CourseController {
     private static final Logger logger = LoggerFactory.getLogger(CourseController.class);
 
     @Autowired
-    private CourseService courseService;
+    private CourseRepository courseRepository;
 
-
-    /**
-     * Retrieve all courses.
-     *
-     * @return List of all courses in the collection
-     */
-    @GetMapping
-    public Iterable<Course> getAll() {
-        logger.warn("Getting all courses");
-        return courseService.getAll();
+    @PostMapping("/course")
+    Course newCourse(@RequestBody Course newCourse) {
+        return courseRepository.save(newCourse);
     }
 
-    /**
-     * Retrieve a specific course by ID.
-     *
-     * @param id ID of the course to retrieve
-     * @return ResponseEntity containing the requested course, or 404 if not found
-     */
-    @GetMapping("/{id}")
-    public ResponseEntity<Course> getOne(@PathVariable Integer id) {
-        ResponseEntity<Course> response;
-        Optional<Course> course = courseService.findById(id);
-        if (course.isPresent()) {
-            response = new ResponseEntity<>(course.get(), HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return response;
+    @GetMapping("/courses")
+    List<Course> getAllCourses() {
+        logger.warn("Getting all users");
+        return courseRepository.findAll();
     }
 
-    /**
-     * Add a new course.
-     *
-     * @param course The course object to add
-     * @return ResponseEntity with the ID of the newly added course, or error status
-     */
-    @PostMapping()
-    ResponseEntity<String> add(@RequestBody Course course) {
-        ResponseEntity<String> response;
-        try {
-            int id = courseService.add(course);
-            response = new ResponseEntity<>("" + id, HttpStatus.CREATED);
-        } catch (IllegalArgumentException e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-
-        return response;
+    @GetMapping("/course/{id}")
+    Course getCourseById(@PathVariable Long id) {
+        return courseRepository.findById(id)
+                .orElseThrow(() -> new CourseNotFoundException(id));
     }
 
-    /**
-     * Delete a course by ID.
-     *
-     * @param id ID of the course to delete
-     * @return ResponseEntity with success status, or 404 if course not found
-     */
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> delete(@PathVariable int id) {
-        ResponseEntity<String> response;
-        if (courseService.delete(id)) {
-            response = new ResponseEntity<>(HttpStatus.OK);
-        } else {
-            response = new ResponseEntity<>(HttpStatus.NOT_FOUND);
-        }
-        return response;
+    @PutMapping("/course/{id}")
+    Course updateCourse(@RequestBody Course newCourse, @PathVariable Long id) {
+        return courseRepository.findById(id)
+                .map(course -> {
+                    course.setName(newCourse.getName());
+                    course.setDescription(newCourse.getDescription());
+                    course.setDuration(newCourse.getDuration());
+                    return courseRepository.save(course);
+                }).orElseThrow(() -> new CourseNotFoundException(id));
     }
 
-    /**
-     * Update an existing course.
-     *
-     * @param id     ID of the course to update
-     * @param course Updated course object
-     * @return ResponseEntity with success status, or error status
-     */
-    @PutMapping("/{id}")
-    public ResponseEntity<String> update(@PathVariable int id, @RequestBody Course course) {
-        ResponseEntity<String> response;
-        try {
-            courseService.update(id, course);
-            response = new ResponseEntity<>(HttpStatus.OK);
-        } catch (Exception e) {
-            response = new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+    @DeleteMapping("/course/{id}")
+    String deleteCourse(@PathVariable Long id){
+        if(!courseRepository.existsById(id)){
+            throw new CourseNotFoundException(id);
         }
-
-        return response;
+        courseRepository.deleteById(id);
+        return  "Course with id "+id+" has been deleted success.";
     }
 }
