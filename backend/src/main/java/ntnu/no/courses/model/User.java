@@ -4,48 +4,23 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.JoinTable;
-import jakarta.persistence.ManyToMany;
+import jakarta.persistence.*;
 
 @Entity
+@Table(name = "user")
 public final class User {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
+    @Column(name = "firstName")
     private String firstName;
+    @Column(name = "lastName")
     private String lastName;
     private String email;
     private String password;
+    public User(){
 
-    /*
-       @ManyToMany
-    @JoinTable(
-            name="selected_course",
-            joinColumns = @JoinColumn(name="user_id"),
-            inverseJoinColumns = @JoinColumn(name = "course_id")
-    )
-    @JsonIgnore
-    private Set<User> users = new HashSet<>();
-     */
-
-
-    public User() {}
-    /*
-       public Set<User> getUsers() {
-        return users;
     }
-
-    public void setUsers(Set<User> users) {
-        this.users = users;
-    }
-     */
-
-
 
     public User(int id, String firstName, String lastName, String email, String password) {
         this.id = id;
@@ -53,16 +28,6 @@ public final class User {
         this.lastName = lastName;
         this.email = email;
         this.password = password;
-    }
-
-    /**
-     * Checks if the object is a valid author.
-     *
-     * @return True if it is valid, false otherwise
-     */
-    @JsonIgnore
-    public boolean isValid() {
-        return firstName != null && lastName != null && email != null && password != null ;
     }
 
     public int getId() {
