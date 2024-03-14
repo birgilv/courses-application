@@ -32,7 +32,7 @@ public class CourseController {
 
     @GetMapping("/courses")
     List<Course> getAllCourses() {
-        logger.warn("Getting all users");
+        logger.warn("Getting all courses");
         return courseRepository.findAll();
     }
 
