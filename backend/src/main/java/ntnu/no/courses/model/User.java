@@ -22,24 +22,29 @@ public final class User {
     private String email;
     private String password;
 
-    @ManyToMany
+    /*
+       @ManyToMany
     @JoinTable(
             name="selected_course",
             joinColumns = @JoinColumn(name="user_id"),
             inverseJoinColumns = @JoinColumn(name = "course_id")
     )
     @JsonIgnore
-    private Set<Course> courses = new HashSet<>();
+    private Set<User> users = new HashSet<>();
+     */
+
 
     public User() {}
-
-    public Set<Course> getCourses() {
-        return courses;
+    /*
+       public Set<User> getUsers() {
+        return users;
     }
 
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
+    public void setUsers(Set<User> users) {
+        this.users = users;
     }
+     */
+
 
 
     public User(int id, String firstName, String lastName, String email, String password) {
