@@ -35,7 +35,6 @@ public class UserController {
 
     @GetMapping("/users")
     List<User> getAllUsers() {
-        logger.warn("Getting all users");
         return userRepository.findAll();
     }
 
