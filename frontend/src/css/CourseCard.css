@@ -1,5 +1,6 @@
 .CourseCard {
-    border-style: dashed;
+    border-style: solid;
+    border-radius: 25px;
     width: 40%;
     margin: 2%;
   }

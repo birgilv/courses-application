@@ -5,6 +5,7 @@ import axios from "axios";
 import HomePage from "./pages/HomePage";
 import { Link, useParams } from "react-router-dom";
 import CourseCard from "./components/CourseCard";
+import NavBar from "./components/NavBar";
 
 
 
@@ -24,6 +25,7 @@ function App() {
 
   return (
     <>
+      <NavBar/>
       <div>
         <img src={appIcon} className="logo" alt="app logo" />
       </div>
