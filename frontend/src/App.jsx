@@ -10,7 +10,6 @@ import ReactDOM from 'react-dom';
 
 function App() {
   return (
-
     <Router>
       <NavBar/>
         <Routes>
