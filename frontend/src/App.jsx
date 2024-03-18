@@ -1,42 +1,27 @@
-import appIcon from '/appIcon.svg'
-import './css/App.css'
-import React, { useEffect, useState } from "react";
-import axios from "axios";
-import HomePage from "./pages/HomePage";
-import { Link, useParams } from "react-router-dom";
-import CourseCard from "./components/CourseCard";
+import React from "react";
+import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import NavBar from "./components/NavBar";
+import HomePage from "./pages/HomePage";
+import AboutPage from "./pages/AboutPage";
+import CoursesPage from "./pages/CoursesPage";
+import ReactDOM from 'react-dom';
 
 
 
 function App() {
-  const [courses, setCourses] = useState([]);
-
-  const { id } = useParams();
-
-  useEffect(() => {
-    loadCourses();
-  }, []);
-
-  const loadCourses = async () => {
-    const result = await axios.get("http://localhost:8080/courses");
-    setCourses(result.data);
-  };
-
   return (
-    <>
+
+    <Router>
       <NavBar/>
-      <div>
-        <img src={appIcon} className="logo" alt="app logo" />
-      </div>
-      <h1>Learniverse Connect</h1>
-      <div className="Courses">
-        {courses.map((course, index) => (
-            <CourseCard key={index} course={course} />
-        ))}
-      </div>
-    </>
-  )
+        <Routes>
+          <Route path="/" exact component={HomePage} /> 
+          <Route path="/about" component={AboutPage} />
+          <Route path="/courses" component={CoursesPage} />
+            {/* Add more routes as needed */}
+        </Routes>
+    </Router>
+
+  );
 }
 
-export default App
+export default App;
