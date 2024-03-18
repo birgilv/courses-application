@@ -1,26 +1,33 @@
+// App.jsx
 import React from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import NavBar from "./components/NavBar";
+import NavBar from "./components/NavBar/NavBar.jsx"
 import HomePage from "./pages/HomePage";
 import AboutPage from "./pages/AboutPage";
 import CoursesPage from "./pages/CoursesPage";
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client'
 
 
 
 function App() {
   return (
     <Router>
-      <NavBar/>
-        <Routes>
-          <Route path="/" exact component={HomePage} /> 
-          <Route path="/about" component={AboutPage} />
-          <Route path="/courses" component={CoursesPage} />
-            {/* Add more routes as needed */}
-        </Routes>
+      <NavBar />
+      <Routes>
+        <Route path="/" element={<HomePage />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/courses" element={<CoursesPage />} />
+        {/* Add more routes as needed */}
+      </Routes>
     </Router>
 
   );
 }
+
+ReactDOM.createRoot(document.getElementById('root')).render(
+  <React.StrictMode>
+    <App />
+  </React.StrictMode>,
+)
 
 export default App;
