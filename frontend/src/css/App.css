@@ -33,10 +33,13 @@
   }
 }
 
-.card {
+.Courses {
   padding: 2em;
+  display: flex;
+  flex-wrap: nowrap;
 }
 
 .read-the-docs {
   color: #888;
 }
+
