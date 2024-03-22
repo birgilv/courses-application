@@ -35,7 +35,6 @@ public class CourseController {
         logger.warn("Getting all courses");
         return courseRepository.findAll();
     }
-
     @GetMapping("/course/{id}")
     Course getCourseById(@PathVariable Long id) {
         return courseRepository.findById(id)
@@ -46,9 +45,15 @@ public class CourseController {
     Course updateCourse(@RequestBody Course newCourse, @PathVariable Long id) {
         return courseRepository.findById(id)
                 .map(course -> {
-                    course.setName(newCourse.getName());
+                    course.setTitle(newCourse.getTitle());
+                    course.setLevelId(newCourse.getLevelId());
+                    course.setCategoryId(newCourse.getCategoryId());
+                    course.setStartDate(newCourse.getStartDate());
+                    course.setEndDate(newCourse.getEndDate());
+                    course.setCredit(newCourse.getCredit());
+                    course.setHoursPerWeek(newCourse.getHoursPerWeek());
                     course.setDescription(newCourse.getDescription());
-                    course.setDuration(newCourse.getDuration());
+                    course.setRelatedCertification(newCourse.getRelatedCertification());
                     return courseRepository.save(course);
                 }).orElseThrow(() -> new CourseNotFoundException(id));
     }
