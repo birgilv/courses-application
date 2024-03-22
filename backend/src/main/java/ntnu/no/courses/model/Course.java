@@ -1,6 +1,7 @@
 package ntnu.no.courses.model;
 
 
+import java.sql.Date;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -18,153 +19,118 @@ import jakarta.persistence.ManyToMany;
 public final class Course {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+
     private int id;
-    private String name;
+    private String title;
+    private int levelId;
+    private int categoryId;
+    private Date startDate;
+    private Date endDate;
+    private double credit;
+    private double hoursPerWeek;
     private String description;
-    private int duration;
+    private String relatedCertification;
 
-    /*
-        @ManyToMany(mappedBy = "courses")
-    private Set<Course> courses = new HashSet<>();
-     */
-
-    /**
-     * Default constructor for Course.
-     */
     public Course() {
     }
 
     /**
-     * Check if this object is a valid course.
-     *
-     * @return True if the course is valid, false otherwise
-     */
-    @JsonIgnore
-    public boolean isValid() {
-        return name != null && !name.equals("");
-    }
-    /**
-     * Getter for the course ID.
-     *
-     * @return The ID of the course
+     * id
      */
     public int getId() {
         return id;
     }
-    /**
-     * Setter for the course ID.
-     *
-     * @param id The ID to set
-     */
     public void setId(int id) {
         this.id = id;
     }
-    /**
-     * Getter for the course name.
-     *
-     * @return The name of the course
-     */
-    public String getName() {
-        return name;
+    public String getTitle() {
+        return title;
     }
-    /**
-     * Setter for the course name.
-     *
-     * @param name The name to set
-     */
-    public void setName(String name) {
-        this.name = name;
+    public void setTitle(String name) {
+        this.title = name;
     }
-    /**
-     * Getter for the course description.
-     *
-     * @return The description of the course
-     */
+
+    public int getLevelId() {
+        return levelId;
+    }
+
+    public void setLevelId(int levelId) {
+        this.levelId = levelId;
+    }
+
+    public int getCategoryId() {
+        return categoryId;
+    }
+
+    public void setCategoryId(int categoryId) {
+        this.categoryId = categoryId;
+    }
+
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    public void setCredit(double credit) {
+        this.credit = credit;
+    }
+
+    public double getCredit() {
+        return credit;
+    }
+
+    public void setHoursPerWeek(double hoursPerWeek) {
+        this.hoursPerWeek = hoursPerWeek;
+    }
+
+    public double getHoursPerWeek() {
+        return hoursPerWeek;
+    }
+
     public String getDescription() {
         return description;
     }
-
-    /**
-     * Setter for the course description.
-     *
-     * @param description The description to set
-     */
     public void setDescription(String description) {
         this.description = description;
     }
-    /**
-     * Getter for the course duration.
-     *
-     * @return The duration of the course
-     */
-    public int getDuration() {
-        return duration;
+    public String getRelatedCertification() {
+        return relatedCertification;
     }
-    /**
-     * Setter for the course duration.
-     *
-     * @param duration The duration to set
-     */
-    public void setDuration(int duration) {
-        this.duration = duration;
+    public void setRelatedCertification(String relatedCertification) {
+        this.relatedCertification = relatedCertification;
     }
-
-    /*
-    /**
-     * Getter for the set of users enrolled in the course.
-     *
-     * @return The set of users enrolled in the course
-
-    public Set<Course> getCourses() {
-        return courses;
-    }
-    /**
-     * Setter for the set of courses enrolled in the course.
-     *
-     * @param courses The set of users to set
-
-    public void setCourses(Set<Course> courses) {
-        this.courses = courses;
-    }
-     */
-
-    /**
-     * Checks if two course objects are equal.
-     *
-     * @param obj The object to compare
-     * @return True if the objects are equal, false otherwise
-     */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (obj == null || obj.getClass() != this.getClass()) return false;
         var that = (Course) obj;
         return this.id == that.id &&
-                Objects.equals(this.name, that.name) &&
+                Objects.equals(this.title, that.title) &&
                 this.description == that.description &&
-                this.duration == that.duration;
+                this.relatedCertification == that.relatedCertification;
     }
-    /**
-     * Generates a hash code for the course object.
-     *
-     * @return The hash code of the object
-     */
+
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, description, duration);
+        return Objects.hash(id, title, description, relatedCertification);
     }
-    /**
-     * Generates a string representation of the course object.
-     *
-     * @return The string representation of the object
-     */
     @Override
     public String toString() {
         return "Course[" +
                 "id=" + id + ", " +
-                "name=" + name + ", " +
+                "name=" + title + ", " +
                 "description=" + description + ", " +
-                "duration=" + duration + ']';
+                "duration=" + relatedCertification + ']';
     }
-
 }
